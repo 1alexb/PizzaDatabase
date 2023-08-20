@@ -1,0 +1,118 @@
+﻿// <--- 09/04/2023 @Alex Created webform and class Car.
+// <--- 10/04/2023 @Alex Boolean for 'is Available' webform checkbox was missing from class Car. Added a auto-implemented property and the constructor for it.
+// <--- 10/04/2023 @Alex TODO Not all SpeedyCarform.Designer.cs button labels follow naming norms. Need to rename them accordingly. 
+// <--- 10/04/2023 @Alex TODO There is a button missing from the form, forgot to add it. It is the central button from the lower bar that enumerates between the array of cars. Needs to be added. 
+// <--- 10/04/2023 @Alenka The files aren’t named as per Brian’s instructions. I tried renaming them but renaming broke some code so I left them unchanged. They should be named as follows: Save the form files as frmCars and frmSearch and the Project as CarsDatabase.
+// <--- 10/04/2023 @Alenka Slightly realigned a few elements on the form
+// <--- 10/04/2023 @Alenka renamed Form 2 to FrmCars as per Brian's instructions + text displayed from Form 2 to Task A
+// <--- 10/04/2023 @Alenka renamed Registration Number text box to txtOrderId, Make text box to txtPizzaType, Engine Size text box to txtPizzaSize, Date Registered text box to txtOrderDate
+// <--- 10/04/2023 @Alenka renamed Rental Per Day text box to txtPrice and changed formatting to 99.99
+// <--- 11/04/2023 @Alenka created Record Count button and named it txtRecordCount
+
+// <--- 11/04/2023 @Alenka Exit button is underlined under x in Brian’s file - which is correct?
+// <--- 11/04/2023 @Alenka changed text property of the form FrmCars (see SpeedyCarForm.cs under comment //3)
+// <--- 11/04/2023 @Alenka changed the name of checkbox to chkDelivery
+// <--- 11/04/2023 @Alenka I don't know whether we need car class - Brian doesn't have it in his file
+
+// <--- 12/04/2023 @Alex Commented the whole class Car, keeping in it there just in case we might need it onwards.
+// <--- 12/04/2023 @Alex The form is showing now for editing, I just double clicked into SpeedyCarForm.cs and can see it.
+// <--- 12/04/2023 @Alex The project is named now 'CarsDatabase' and the form 'frmCars' as suggested. Edit the parts so that the code works after the renaming.
+
+// <--- 21/04/2023 @Alex The 200 ambiguity errors were caused by using the wrong namespace. Every namespace must be onwards 'CarsDatabase´instead of the old 'SP_CarDB' renamed all accordingly. Errors are gone now.
+// <--- 21/04/2023 @Alex Removed class Car as it looks we will not need it. I have a local copy anyways. Cleaned up the tree.
+
+// <--- 23/04/2023 @Alenka Corrected the typo of double // in the date on the frmCars.cs form
+// <--- 23/04/2023 @Alenka Created frmSearch (tasks 15 and 16 in Brian's instructions)
+// <--- 23/04/2023 @Alenka Created SQL database Hire with tblPizza but couldn't connect to it; also, how does this work when collaborating since it is bound to my computer?
+
+// <--- 24/04/2023 @Alex --> This version connects to the database. You need to install a NuGet Package in order to make it work:
+
+1. Right-click on your project in the Solution Explorer.
+2. Choose "Manage NuGet Packages".
+3. On the "Browse" tab and search for "System.Data.SqlClient".
+4. Select the package and click "Install" to add it to your project.
+
+// The buttons need to be implemented yet, but this one step solved towards it.
+
+// <--- 24/04/2023 @Alenka Added in frmCars.cs: code in section FrmCars_Load - as per Brian's video instructions;
+// There was an unhandled exception so I added try-catch section as in Brian's file. After adding that, 
+// a message pops up explaining the issue. Indeed, I can't connect to Alex's database. After changing to my hostname, I can connect to database.
+// <--- 24/04/2023 @Alenka Added BindControls and recordCountDisplay methods in frmCars.cs (project steps 5, 6 & 9)
+// <--- 24/04/2023 @Alenka Added code for Update, Add, Delete & Cancel buttons - tested and seem to work
+
+// <--- 03/05/2023 @Alenka 
+	- Added code for First, Previous, Next and Last buttons on frmCars (Step 8) - tested and working
+	- Added code for error handling in Update button on frmCars (Step 10)
+	- Error handling code already in FrmCars_Load (Step 10)
+	- More error handling code to be added if needed when testing the programme (Brian only has the above)
+	- Added code for the Exit button on frmCars (Step 11) - tested and working
+	- Added ToolTip control to the form frmCars (Step 12)
+	- Set the ToolTip property for all the data entry controls on frmCars to an appropriate text value (Step 13) - tested and working
+	- We should consider adding code for user to confirm they want data deleted. Now it is deleted when button Delete is pressed without confirmation.
+	- Added code for the Search button to open frmSearch (Step 14) - tested and working
+	- Set the Text property of form frmSearch as specified (Step 17) - tested and working
+
+09/05/2023 @Alex frmCars.cs 38-39: added code that gets the machine name and adds it to the sql string, see line 49 and 50.
+							48/109/113: added concurrent and sql exceptions, aside the generic ones.
+							129-141: added code that checks if VehicleRegNo is empty or already exists into the database.  
+							1-end: added clearer comments and cleaned a bit the code.
+				frmSearch.cs 1-end: Added steps 18-20 as per Brian's code example. Added a few bits that were throwing an error on Brian's.
+				Tested that for me, the search function is not working, or the error message when all the fields are not filled. Needs to be reviewed
+				or discussed with Brian?
+
+				15/05/2023 Alex frmCars 129-141 removed dupe plate check. Since the field is a primary key in the database there is no need. Also it breaks saving plates.
+
+17/05/2023 @Alex The event handlers from the buttons to Run and Close were missing in the frmSearch designer, once added they work.
+
+- Version B of the program. This program uses Brian's first version of the code. instead of frmSearch accessing the Dataset from the parent form
+frmCars. frmSearch directly calls to the database by sql connection string. This provides encapsulation as it does not show all the records in the interface.
+
+- After meeting with Alenka, we are going with version B. Alenka notices search results duplicate the tables. This is because when the query returns it creates a data table with the data.
+I removed the columns from the data view grid 'dataGridView1´since they become redundant. Tested that it does not create more dupes.
+
+Added this.Text = $"Task A Search {Environment.UserName} {DateTime.Today.ToShortDateString()}"; to frmCars line 25. Should show username.
+
+
+05/06/2023 @Alex
+- Updated the user interface to reflect the new business line. 
+- Changed the name of the form to frmPizza and the name of the project to PizzaDatabase. 
+- frmSearch does not require major changes.
+- The name of the database is the same, so Hire.mdf.
+- The name of the new table within Hire must be tblPizza.
+- Uptaded the SQL queries to point to the new table and new fields.
+- A new database table needs to be created with the following fields:
+	- OrderID (int, primary key, identity)
+	- PizzaType (char)
+	- PizzaSize (char)
+	- OrderDate (date)
+	- Price (decimal)
+	- Delivery (checkbox))
+
+06/06/2023 @Alex
+- FrmPizza: Check if orderId is a valid integer and non-empty when dding a new record. If not, show a message box. "Please enter a valid Order ID."
+
+
+09/06/2023 @Alex
+- Removed the check as for SQL to show leading zeroes in the OrderID field a char letter 'O' was added to the field. This is not a good practice, but it is the only way to show leading zeroes in SQL.
+- Added ComboBoxes to pizza type and size to prevent user from entering wrong data. This is a better practice than the previous one.
+- Added a calendar to the OrderDate field because it's fancy and I like it.
+- Added an IDENTIFY column to the tblPizza and made it primary, so that nullable values are allowed in the user interface for all fields including OrderID. A warning could be added if OrderID is null but that's it.
+
+11/06/2023 @Alex	
+- Added input validation methods to the frmPizza class. This is to prevent the user from entering wrong data.
+- Added a method to check if the OrderID is a valid format and non-empty. If not, show a message box. "Please enter a valid Order ID."
+- Added a method that clears the form on adding a new record.
+- Added a SQL exception that checks if the OrderID is already in the database. If so, show a message box. "Order ID already exists."
+- Added the correct format to the switch string pizza prices €.
+- Updated tooltips to reflect the new business line.
+
+
+12/06/2023 @Alex
+
+- Solved the bug that freezes the app when removing the price from an order. This was caused because a null string cannot be converted to a currecy format:
+	 Binding pizzaPriceBinding = new Binding("Text", pizzaBindingSource, "Price", true, DataSourceUpdateMode.Never, "", "c");
+            //  ("") is passed as the nullValue argument to the Binding constructor to prevent the control from displaying the string "null" when the value of the data source is DBNull.Value.
+            // This tells the binding to use an empty string when it can't format the Price value as a currency. This way, the application won't throw an exception when the Price text box is empty.
+- Added DataSourceUpdateMode.Never to all the bindings to prevent the user from changing the data in the database unless they click the Update button.
+- Moved all input validation logic and methods to a single class. This is to prevent code duplication and to make the code more readable.
+- Failed to add a control that warns the user that the data will be lost if they modify a field and move from the field. This was causing more problems than it solved. Adding a warning at the app start is enough.
